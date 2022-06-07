@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+</head>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  .item{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px ;
+    box-sizing: border-box;
+  }
+  .item:hover .block{
+    box-shadow: 0px 0px 40px 5px #333;
+
+  }
+  .item:hover .bg{
+    opacity: 0;
+  }
+  .block{
+    width: 100%;
+    height: 100%;
+    color: #777;
+    max-height: 450px;
+    max-width: 300px;
+    border-radius: 10px;
+    background: url('https://images.pexels.com/photos/4245826/pexels-photo-4245826.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    transform: scale(1.03);
+    box-shadow: none;
+  }
+  .bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("https://images.pexels.com/photos/4245826/pexels-photo-4245826.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  .blur{
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("https://images.pexels.com/photos/4245826/pexels-photo-4245826.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    filter: blur(15px);
+  }
+  .text{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffff;
+  }
+  .circleLight{
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: block;
+    transition: 0.5s;
+    border-radius: 10px;
+    background: radial-gradient(circle at 80px 40px,#fff,transparent);
+  }
+  .block:hover .circleLight{
+    opacity: 0.4;
+  }
+</style>
+<body>
+  <div class="item">
+    <div class="bg"></div>
+    <div class="blur"></div>
+    <div class="block">
+      <div class="text">
+        <span class="circleLight"></span>
+        <h2>hello</h2>
+        <p>hello world</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<script>
+  var mouse ={
+    X:0,
+    Y:0,
+    CX:0,
+    CY:0,
+  },
+  block={
+    X:mouse.X,
+    Y:mouse.Y,
+    CX:mouse.CX,
+    CY:mouse.CY,
+  }
+
+  $(".block").on("mousemove",function(e){
+    mouse.X = (e.pageX - $(this).offset().left) -$(".block").width() /2
+    mouse.Y = (e.pageY - $(this).offset().top) -$(".block").height() /2
+  })
+  $(".block").on("mouseleave",function(e){
+    mouse.X = mouse.CX
+    mouse.Y = mouse.CY
+  })
+
+  setInterval(function(){
+    block.CY += (mouse.Y - block.CY)
+    block.CX += (mouse.X - block.CX)
+    $(".circleLight").css('background',
+    'radial-gradient(circle at '+mouse.X+'px'+mouse.Y+'px,#fff,transparent);'
+    )
+    $(".block").css({
+      transform:'scale(1.03) translate('+
+          (block.CX*0.05)+'px,'+
+          (block.CY*0.05)+'px)rotateX('+
+          (block.CY*0.05)+'deg) rotateY('+
+          (block.CX*0.05)+'deg)'
+    })
+  },20)
+</script>
